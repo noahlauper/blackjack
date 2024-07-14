@@ -1,6 +1,5 @@
-package ch.bbw.m183.blackjack_backend.model;
+package ch.bbw.m183.blackjack_backend.model.request;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import ch.bbw.m183.blackjack_backend.model.Card;
 import ch.bbw.m183.blackjack_backend.model.Deck;
-import ch.bbw.m183.blackjack_backend.model.GameConfiguration;
+import ch.bbw.m183.blackjack_backend.model.request.GameConfiguration;
 import ch.bbw.m183.blackjack_backend.model.Hand;
-import ch.bbw.m183.blackjack_backend.model.StartGameResponse;
+import ch.bbw.m183.blackjack_backend.model.response.HitResponse;
+import ch.bbw.m183.blackjack_backend.model.response.StartGameResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,9 +30,9 @@ public class BlackJackService {
     // Create a new deck (within startGame for this example)
     this.deck = new Deck();
     this.config = new GameConfiguration(fixHandForPlayer2);
-    System.out.println(deck.getCards().toString());
     // Shuffle the deck before dealing cards
     Collections.shuffle(this.deck.getCards());
+    System.out.println(deck.getCards().toString());
 
     // Deal initial cards (consider configurable manipulation)
     dealCard(player1Hand, true);
@@ -52,6 +53,9 @@ public class BlackJackService {
       hand.addCard(deck.dealCard());
       return hand;
     } else {
+
+      //player1 direct 21
+
       // Filter cards to deal only cards with value 2-6 (inclusive)
       List<Card> lowValueCards = deck.getCards().stream()
           .filter(card -> card.getValue() >= 2 && card.getValue() <= 6)
@@ -73,25 +77,13 @@ public class BlackJackService {
     }
   }
 
-  public Hand playerHit(int playerNumber, boolean dealNormally) {
+  public HitResponse playerHit(int playerNumber, boolean dealNormally) {
+    Hand updatedHand;
     if (playerNumber == 1) {
-      return dealCard(this.hand1, dealNormally);
+      updatedHand = dealCard(this.hand1, dealNormally);
     } else {
-      return dealCard(this.hand2, dealNormally);
+      updatedHand = dealCard(this.hand2, dealNormally);
     }
-  }
-
-  public String getWinner(Hand player1Hand, Hand player2Hand) {
-    if (player1Hand.isBust()) {
-      return "Player 2 Wins";
-    } else if (player2Hand.isBust()) {
-      return "Player 1 Wins";
-    } else if (player1Hand.getHandValue() > player2Hand.getHandValue()) {
-      return "Player 1 Wins";
-    } else if (player1Hand.getHandValue() < player2Hand.getHandValue()) {
-      return "Player 2 Wins";
-    } else {
-      return "Push (Tie)";
-    }
+    return new HitResponse(updatedHand.getCardsAsDTO(), updatedHand.getHandValue());
   }
 }

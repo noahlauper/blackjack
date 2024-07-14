@@ -1,6 +1,6 @@
-package ch.bbw.m183.blackjack_backend.model;
+package ch.bbw.m183.blackjack_backend.model.request;
 
-import java.util.List;
+import ch.bbw.m183.blackjack_backend.model.Hand;
 
 import lombok.Data;
 

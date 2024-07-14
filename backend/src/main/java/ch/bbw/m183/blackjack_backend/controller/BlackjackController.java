@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.bbw.m183.blackjack_backend.model.Hand;
-import ch.bbw.m183.blackjack_backend.model.StartGameResponse;
+import ch.bbw.m183.blackjack_backend.model.response.HitResponse;
+import ch.bbw.m183.blackjack_backend.model.response.StartGameResponse;
 import ch.bbw.m183.blackjack_backend.service.BlackJackService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class BlackjackController {
   }
 
   @PostMapping("/hit/{playerNumber}/{fixedHandPlayer}")
-  public Hand playerHit(
+  public HitResponse playerHit(
       @PathVariable int playerNumber,
       @PathVariable boolean fixedHandPlayer
   ) {
