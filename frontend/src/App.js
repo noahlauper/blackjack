@@ -10,20 +10,17 @@ function App() {
     const [showGame, setShowGame] = useState(true)
 
 
-
     function startGame() {
-      setShowGame(false)
+        setShowGame(false)
 
     }
-
-
 
 
     return (
         <div className="App">
             {showGame ?
                 <Button onClick={() => startGame()} variant="primary">Start</Button>
-            : <GameScreen/>
+                : <GameScreen/>
 
             }
         </div>

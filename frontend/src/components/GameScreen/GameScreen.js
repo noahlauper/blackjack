@@ -6,6 +6,7 @@ import {B1} from '@letele/playing-cards';
 import {useSearchParams} from "react-router-dom";
 
 const GameScreen = () => {
+    //Config for Requests
     const config = {
         headers: {
             "Access-Control-Allow-Origin": "*",
@@ -21,7 +22,7 @@ const GameScreen = () => {
         finished: "FINISHED",
     }
 
-
+    //All useStates for this game
     const [player1, setPlayer1] = useState([]);
     const [player1Points, setPlayer1Points] = useState([0])
     const [player2, setPlayer2] = useState([]);
@@ -54,6 +55,7 @@ const GameScreen = () => {
         }
     }, [player1Stand, player2Stand])
 
+    //Ends game if 21 is Reached
     useEffect(()=>{
         console.log("new Points")
         if (player1Points >= 21){
