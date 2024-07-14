@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 import ch.bbw.m183.blackjack_backend.model.Card;
 import ch.bbw.m183.blackjack_backend.model.Deck;
 import ch.bbw.m183.blackjack_backend.model.GameConfiguration;
-import ch.bbw.m183.blackjack_backend.model.GameStatus;
 import ch.bbw.m183.blackjack_backend.model.Hand;
-import ch.bbw.m183.blackjack_backend.model.StartGameDTO;
+import ch.bbw.m183.blackjack_backend.model.StartGameResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +25,7 @@ public class BlackJackService {
   private Hand hand2 = new Hand();
 
 
-  public StartGameDTO startGame(Hand player1Hand, Hand player2Hand, boolean fixHandForPlayer2) {
+  public StartGameResponse startGame(Hand player1Hand, Hand player2Hand, boolean fixHandForPlayer2) {
     // Create a new deck (within startGame for this example)
     this.deck = new Deck();
     this.config = new GameConfiguration(fixHandForPlayer2);
@@ -35,8 +34,8 @@ public class BlackJackService {
     Collections.shuffle(this.deck.getCards());
 
     // Deal initial cards (consider configurable manipulation)
-    dealCard(player1Hand, !config.isFixedHandForPlayer1());
-    dealCard(player1Hand, !config.isFixedHandForPlayer1());
+    dealCard(player1Hand, true);
+    dealCard(player1Hand, true);
     dealCard(player2Hand, !config.isFixedHandForPlayer2());
     dealCard(player2Hand, !config.isFixedHandForPlayer2());
 
@@ -45,7 +44,7 @@ public class BlackJackService {
     List<Card> player2Cards = player2Hand.getCards();
     this.hand1.setCards(player1Cards);
     this.hand2.setCards(player2Cards);
-    return new StartGameDTO(this.hand1.getCardsAsDTO(), this.hand2.getCardsAsDTO());
+    return new StartGameResponse(this.hand1.getCardsAsDTO(), this.hand2.getCardsAsDTO(), this.hand1.getHandValue(), this.hand2.getHandValue());
   }
 
   public Hand dealCard(Hand hand, boolean dealNormally) {

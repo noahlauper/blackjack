@@ -23,13 +23,13 @@ public class Hand {
   }
 
   public int getHandValue() {
-    OptionalInt sum = OptionalInt.of(cards.stream().mapToInt(Card::getValue).sum());
-    int value = sum.getAsInt();
-    if (cards.stream().anyMatch(card -> card.getRank() == Rank.ACE) && value + 10 <= 21) {
-      return value + 10;
+    int sum = cards.stream().mapToInt(card -> Integer.parseInt(convertCardToDTO(card).getRank())).sum();
+    // Check for aces and potentially add 10 if it doesn't cause bust
+    int numAces = (int) cards.stream().filter(card -> card.getRank() == Rank.ACE).count();
+    if (numAces > 0 && sum + numAces * 10 <= 21) {
+      return sum + numAces * 10; // Add 10 for each ace if it doesn't cause bust
     }
-    return value;
-
+    return sum;
   }
 
   public List<CardDTO> getCardsAsDTO() {
