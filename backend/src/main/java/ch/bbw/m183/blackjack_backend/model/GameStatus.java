@@ -14,5 +14,6 @@ public class GameStatus {
   public GameStatus(List<Card> player1Hand, List<Card> player2Hand) {
     this.player1Hand = player1Hand;
     this.player2Hand = player2Hand;
+    this.winner = "";
   }
 }

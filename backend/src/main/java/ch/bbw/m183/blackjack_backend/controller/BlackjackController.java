@@ -32,18 +32,16 @@ public class BlackjackController {
   }
 
   @PostMapping("/hit/{playerNumber}/{fixedHandPlayer}")
-  public GameStatus playerHit(
+  public Hand playerHit(
       @PathVariable int playerNumber,
-      @RequestBody PlayRequest playRequest,
       @PathVariable boolean fixedHandPlayer
   ) {
     if (playerNumber == 1) {
-      service.playerHit(playRequest.getPlayer1Hand(), fixedHandPlayer);
-    } else if (playerNumber == 2) {
-      service.playerHit(playRequest.getPlayer2Hand(), fixedHandPlayer);
+      return service.playerHit(playerNumber, fixedHandPlayer);
+   } else if (playerNumber == 2) {
+      return service.playerHit(playerNumber, fixedHandPlayer);
     } else {
       throw new IllegalArgumentException("Invalid player number");
     }
-    return new GameStatus(playRequest.getPlayer1Hand().getCards(), playRequest.getPlayer2Hand().getCards());
   }
 }

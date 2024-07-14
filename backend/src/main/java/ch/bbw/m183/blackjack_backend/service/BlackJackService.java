@@ -21,6 +21,8 @@ public class BlackJackService {
 
   private Deck deck;
   private GameConfiguration config;
+  private Hand hand1;
+  private Hand hand2;
 
 
   public GameStatus startGame(Hand player1Hand, Hand player2Hand, boolean fixHandForPlayer2) {
@@ -40,12 +42,15 @@ public class BlackJackService {
     // Create GameStatus object with initial player hands
     List<Card> player1Cards = player1Hand.getCards();
     List<Card> player2Cards = player2Hand.getCards();
+    this.hand1.setCards(player1Cards);
+    this.hand2.setCards(player2Cards);
     return new GameStatus(player1Cards, player2Cards);
   }
 
-  public void dealCard(Hand hand, boolean dealNormally) {
+  public Hand dealCard(Hand hand, boolean dealNormally) {
     if (dealNormally) {
       hand.addCard(deck.dealCard());
+      return hand;
     } else {
       // Filter cards to deal only cards with value 2-6 (inclusive)
       List<Card> lowValueCards = deck.getCards().stream()
@@ -59,15 +64,21 @@ public class BlackJackService {
         hand.addCard(lowValueCard);
         // Remove the dealt card from the main deck to prevent duplicates
         deck.getCards().remove(lowValueCard);
+        return hand;
       } else {
         // If no low-value cards are left, deal a random card from the remaining deck
         hand.addCard(deck.dealCard());
+        return hand;
       }
     }
   }
 
-  public void playerHit(Hand hand, boolean dealNormally) {
-    dealCard(hand, dealNormally);
+  public Hand playerHit(int playerNumber, boolean dealNormally) {
+    if (playerNumber == 1) {
+      return dealCard(this.hand1, dealNormally);
+    } else {
+      return dealCard(this.hand2, dealNormally);
+    }
   }
 
   public String getWinner(Hand player1Hand, Hand player2Hand) {
