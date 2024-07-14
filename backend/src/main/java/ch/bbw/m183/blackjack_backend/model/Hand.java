@@ -23,17 +23,13 @@ public class Hand {
   }
 
   public int getHandValue() {
-    int sum = cards.stream().mapToInt(card -> {
-      switch (card.getRank()) {
-        case KING:
-        case QUEEN:
-        case JACK:
-          return 10; // Face cards are worth 10
-        default:
-          return card.getValue(); // Use card's getValue() for numeric ranks and Ace
-      }
+    int sum = cards.stream().mapToInt(card -> switch (convertCardToDTO(card).getRank()) {
+      case "k", "q", "j" -> 10; // Face cards are worth 10
+      case "a" -> 1;
+      default -> Integer.parseInt(convertCardToDTO(card).getRank()); // Use card's getValue() for numeric ranks and Ace
     }).sum();
 
+    System.out.println(sum);
     // Check for aces and potentially add 10 if it doesn't cause bust
     int numAces = (int) cards.stream().filter(card -> card.getRank() == Rank.ACE).count();
     if (numAces > 0 && sum + numAces * 10 <= 21) {
@@ -47,50 +43,22 @@ public class Hand {
   }
 
   private CardDTO convertCardToDTO(Card card) {
-    String rankString;
-    switch (card.getRank()) {
-      case TWO:
-        rankString = "2";
-        break;
-      case THREE:
-        rankString = "3";
-        break;
-      case FOUR:
-        rankString = "4";
-        break;
-      case FIVE:
-        rankString = "5";
-        break;
-      case SIX:
-        rankString = "6";
-        break;
-      case SEVEN:
-        rankString = "7";
-        break;
-      case EIGHT:
-        rankString = "8";
-        break;
-      case NINE:
-        rankString = "9";
-        break;
-      case TEN:
-        rankString = "10";
-        break;
-      case JACK:
-        rankString = "j";
-        break;
-      case QUEEN:
-        rankString = "q";
-        break;
-      case KING:
-        rankString = "k";
-        break;
-      case ACE:
-        rankString = "a";
-        break;
-      default:
-        throw new IllegalStateException("Unexpected Rank value: " + card.getRank());
-    }
+    String rankString = switch (card.getRank()) {
+      case TWO -> "2";
+      case THREE -> "3";
+      case FOUR -> "4";
+      case FIVE -> "5";
+      case SIX -> "6";
+      case SEVEN -> "7";
+      case EIGHT -> "8";
+      case NINE -> "9";
+      case TEN -> "10";
+      case JACK -> "j";
+      case QUEEN -> "q";
+      case KING -> "k";
+      case ACE -> "a";
+      default -> throw new IllegalStateException("Unexpected Rank value: " + card.getRank());
+    };
     return new CardDTO(rankString, card.getSuit());
   }
 
