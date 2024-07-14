@@ -43,6 +43,7 @@ public class BlackJackService {
       dealCard(player1Hand, true);
       dealCard(player2Hand, true);
       dealCard(player2Hand, true);
+      dealCard(player2Hand, true);
     }
 
     // Assign Hand with dealt cards

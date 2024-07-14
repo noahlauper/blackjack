@@ -22,14 +22,13 @@ public class Deck {
     return new ArrayList<>(cards); // Create a copy of the cards list
   }
 
+  //Method to deal a card from the deck
   public Card dealCard() {
     if (cards.isEmpty()) {
       throw new IllegalStateException("Deck is empty, cannot deal cards");
     }
+    //Remove card from the deck and return the card
     Card card = cards.remove(0);
     return card;
   }
-
-  // Add methods for shuffling the deck (already done in BlackjackService)
-  // Consider methods for resetting the deck if needed
 }

@@ -11,6 +11,7 @@ public class Card implements Comparable<Card>{
   private Suit suit;
   private Rank rank;
 
+  //get Value Method to get value of cards.
   public int getValue() {
     return switch (rank) {
       case TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE -> rank.ordinal() + 1; // Ranks 2-9 have face value
@@ -19,6 +20,8 @@ public class Card implements Comparable<Card>{
       default -> throw new IllegalStateException("Unexpected Rank value: " + rank);
     };
   }
+
+  //CompareTo method to set default order
   @Override
   public int compareTo(Card otherCard) {
     return this.getValue() - otherCard.getValue();

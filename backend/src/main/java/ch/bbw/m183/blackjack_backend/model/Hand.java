@@ -22,14 +22,15 @@ public class Hand {
     return cards;
   }
 
+  //Method to get the value of the hand
   public int getHandValue() {
+    //get the value of each card using a stream and mapToInt. The switch case is to handle King, Queen, Jack and ace
     int sum = cards.stream().mapToInt(card -> switch (convertCardToDTO(card).getRank()) {
       case "k", "q", "j" -> 10; // Face cards are worth 10
       case "a" -> 1;
       default -> Integer.parseInt(convertCardToDTO(card).getRank()); // Use card's getValue() for numeric ranks and Ace
     }).sum();
 
-    System.out.println(sum);
     // Check for aces and potentially add 10 if it doesn't cause bust
     int numAces = (int) cards.stream().filter(card -> card.getRank() == Rank.ACE).count();
     if (numAces > 0 && sum + numAces * 10 <= 21) {
@@ -38,10 +39,13 @@ public class Hand {
     return sum;
   }
 
+  //convert all cards at in the hand to cardDTOs
   public List<CardDTO> getCardsAsDTO() {
+    //using a stream to convert all cards to cardDTOs
     return cards.stream().map(card -> convertCardToDTO(card)).collect(Collectors.toList());
   }
 
+  //Convert Cards to cardDTOs for easier use in frontend
   private CardDTO convertCardToDTO(Card card) {
     String rankString = switch (card.getRank()) {
       case TWO -> "2";
