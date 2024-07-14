@@ -2,14 +2,13 @@ package ch.bbw.m183.blackjack_backend.service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import ch.bbw.m183.blackjack_backend.model.Card;
 import ch.bbw.m183.blackjack_backend.model.Deck;
-import ch.bbw.m183.blackjack_backend.model.request.GameConfiguration;
+import ch.bbw.m183.blackjack_backend.model.Rank;
 import ch.bbw.m183.blackjack_backend.model.Hand;
 import ch.bbw.m183.blackjack_backend.model.response.HitResponse;
 import ch.bbw.m183.blackjack_backend.model.response.StartGameResponse;
@@ -21,24 +20,27 @@ import lombok.RequiredArgsConstructor;
 public class BlackJackService {
 
   private Deck deck;
-  private GameConfiguration config;
   private Hand hand1 = new Hand();
   private Hand hand2 = new Hand();
 
 
-  public StartGameResponse startGame(Hand player1Hand, Hand player2Hand, boolean fixHandForPlayer2) {
+  public StartGameResponse startGame(Hand player1Hand, Hand player2Hand, boolean fixedGame) {
     // Create a new deck (within startGame for this example)
     this.deck = new Deck();
-    this.config = new GameConfiguration(fixHandForPlayer2);
     // Shuffle the deck before dealing cards
     Collections.shuffle(this.deck.getCards());
-    System.out.println(deck.getCards().toString());
-
-    // Deal initial cards (consider configurable manipulation)
-    dealCard(player1Hand, true);
-    dealCard(player1Hand, true);
-    dealCard(player2Hand, !config.isFixedHandForPlayer2());
-    dealCard(player2Hand, !config.isFixedHandForPlayer2());
+    System.out.println();
+    // Deal initial cards
+    if (fixedGame) {
+      dealCard(player1Hand, false);
+      dealCard(player2Hand, true);
+      dealCard(player2Hand, true);
+    } else {
+      dealCard(player1Hand, true);
+      dealCard(player1Hand, true);
+      dealCard(player2Hand, true);
+      dealCard(player2Hand, true);
+    }
 
     // Create GameStatus object with initial player hands
     List<Card> player1Cards = player1Hand.getCards();
@@ -53,27 +55,26 @@ public class BlackJackService {
       hand.addCard(deck.dealCard());
       return hand;
     } else {
+      // Automatic win hand (King and Ace)
+      Optional<Card> kingCard = deck.getCards().stream()
+          .filter(card -> card.getRank() == Rank.KING)
+          .findFirst();  // Find the first King card
 
-      //player1 direct 21
-
-      // Filter cards to deal only cards with value 2-6 (inclusive)
-      List<Card> lowValueCards = deck.getCards().stream()
-          .filter(card -> card.getValue() >= 2 && card.getValue() <= 6)
-          .collect(Collectors.toList());
-
-      // If there are low-value cards remaining, deal one from the filtered list
-      if (!lowValueCards.isEmpty()) {
-        int randomIndex = new Random().nextInt(lowValueCards.size());
-        Card lowValueCard = lowValueCards.remove(randomIndex);
-        hand.addCard(lowValueCard);
-        // Remove the dealt card from the main deck to prevent duplicates
-        deck.getCards().remove(lowValueCard);
-        return hand;
-      } else {
-        // If no low-value cards are left, deal a random card from the remaining deck
-        hand.addCard(deck.dealCard());
-        return hand;
+      if (kingCard.isPresent()) {
+        hand.addCard(kingCard.get());  // Add the King card from the stream
+        deck.getCards().remove(kingCard.get());  // Remove the dealt King from the deck
       }
+
+      Optional<Card> aceCard = deck.getCards().stream()
+          .filter(card -> card.getRank() == Rank.ACE)
+          .findFirst();  // Find the first Ace card
+
+      if (aceCard.isPresent()) {
+        hand.addCard(aceCard.get());  // Add the Ace card from the stream
+        deck.getCards().remove(aceCard.get());  // Remove the dealt Ace from the deck
+      }
+
+      return hand;
     }
   }
 

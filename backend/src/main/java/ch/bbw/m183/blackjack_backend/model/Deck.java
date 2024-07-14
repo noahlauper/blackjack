@@ -14,6 +14,8 @@ public class Deck {
         .flatMap(suit -> Stream.of(Rank.values())
             .map(rank -> new Card(suit, rank)))
         .collect(Collectors.toList());
+    Collections.shuffle(cards);
+
   }
 
   public List<Card> getCards() {

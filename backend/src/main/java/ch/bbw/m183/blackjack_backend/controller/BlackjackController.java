@@ -3,7 +3,6 @@ package ch.bbw.m183.blackjack_backend.controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.bbw.m183.blackjack_backend.model.Hand;
@@ -20,13 +19,13 @@ public class BlackjackController {
 
   private final BlackJackService service;
 
-  @GetMapping("/start/{fixedHandPlayer2}")
+  @GetMapping("/start/{fixedGame}")
   public StartGameResponse startGame(
-      @PathVariable boolean fixedHandPlayer2
+      @PathVariable boolean fixedGame
   ) {
     Hand player1Hand = new Hand();
     Hand player2Hand = new Hand();
-    return service.startGame(player1Hand, player2Hand, fixedHandPlayer2);
+    return service.startGame(player1Hand, player2Hand, fixedGame);
   }
 
   @GetMapping("/hit/{playerNumber}/{fixedHandPlayer}")

@@ -23,7 +23,17 @@ public class Hand {
   }
 
   public int getHandValue() {
-    int sum = cards.stream().mapToInt(card -> Integer.parseInt(convertCardToDTO(card).getRank())).sum();
+    int sum = cards.stream().mapToInt(card -> {
+      switch (card.getRank()) {
+        case KING:
+        case QUEEN:
+        case JACK:
+          return 10; // Face cards are worth 10
+        default:
+          return card.getValue(); // Use card's getValue() for numeric ranks and Ace
+      }
+    }).sum();
+
     // Check for aces and potentially add 10 if it doesn't cause bust
     int numAces = (int) cards.stream().filter(card -> card.getRank() == Rank.ACE).count();
     if (numAces > 0 && sum + numAces * 10 <= 21) {
