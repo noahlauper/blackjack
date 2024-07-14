@@ -29,7 +29,7 @@ public class BlackjackController {
     return service.startGame(player1Hand, player2Hand, fixedHandPlayer2);
   }
 
-  @PostMapping("/hit/{playerNumber}/{fixedHandPlayer}")
+  @GetMapping("/hit/{playerNumber}/{fixedHandPlayer}")
   public HitResponse playerHit(
       @PathVariable int playerNumber,
       @PathVariable boolean fixedHandPlayer
