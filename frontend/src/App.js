@@ -9,9 +9,15 @@ function App() {
 
     const [showGame, setShowGame] = useState(true)
 
+
+
     function startGame() {
       setShowGame(false)
+
     }
+
+
+
 
     return (
         <div className="App">

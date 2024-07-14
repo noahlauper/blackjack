@@ -3,6 +3,7 @@ import axios from "axios";
 import Hand from "../Hand/Hand";
 import Button from "react-bootstrap/Button";
 import {B1} from '@letele/playing-cards';
+import {useSearchParams} from "react-router-dom";
 
 const GameScreen = () => {
     const config = {
@@ -33,10 +34,11 @@ const GameScreen = () => {
 
     //First Callup it Makes a Request to Start the Game
     useEffect(() => {
-
-
+        var sp = new URLSearchParams(window.location.search)
+        console.log(sp.get('mode'))
+    var mode =    sp.get('mode') === "true" ? true : false
         axios
-            .get("http://localhost:8080/start/false", config)
+            .get(`http://localhost:8080/start/${mode}`, config)
             .then(function (response) {
                 setPlayer1(response.data.player1Hand);
                 setPlayer2(response.data.player2Hand);
@@ -124,7 +126,7 @@ const GameScreen = () => {
                     <p>player 2</p>
                     <p>Points: {player2Points}</p>
                     <Hand hand={player2}/>
-                    {player2Hited ? <Button onClick={() => setWhosTurn(Phase.inBetween21)}>End Turn</Button> :
+                    {player2Hited || player2Stand ?  <Button onClick={() => setWhosTurn(Phase.inBetween21)}>End Turn</Button> :
                         <Button onClick={() => hit(2)}>Hit</Button>
                     }
                     {!player2Hited  && !player2Stand && <Button onClick={() => {
