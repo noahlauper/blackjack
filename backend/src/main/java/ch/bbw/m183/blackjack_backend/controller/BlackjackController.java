@@ -11,6 +11,7 @@ import ch.bbw.m183.blackjack_backend.model.GameConfiguration;
 import ch.bbw.m183.blackjack_backend.model.GameStatus;
 import ch.bbw.m183.blackjack_backend.model.Hand;
 import ch.bbw.m183.blackjack_backend.model.PlayRequest;
+import ch.bbw.m183.blackjack_backend.model.StartGameDTO;
 import ch.bbw.m183.blackjack_backend.service.BlackJackService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class BlackjackController {
   private final BlackJackService service;
 
   @GetMapping("/start/{fixedHandPlayer2}")
-  public GameStatus startGame(
+  public StartGameDTO startGame(
       @PathVariable boolean fixedHandPlayer2
   ) {
     Hand player1Hand = new Hand();
