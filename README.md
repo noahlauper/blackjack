@@ -16,8 +16,8 @@ http://localhost:3000/?mode=true
 
 
 # Selbstbewertung
-Einhaltung der funktionalen Programmierprinzipien: 15
-Code-Qualität und Struktur: 10
-Komplexität und Herausforderung der Aufgabe: 18
-Videoabgabe: 25
+Einhaltung der funktionalen Programmierprinzipien: 15, <br />
+Code-Qualität und Struktur: 10, <br />
+Komplexität und Herausforderung der Aufgabe: 18, <br />
+Videoabgabe: 25, <br />
 Kreativität: 18
