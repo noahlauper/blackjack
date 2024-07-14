@@ -1,5 +1,6 @@
 package ch.bbw.m183.blackjack_backend.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class BlackjackController {
 
   private final BlackJackService service;
@@ -45,22 +47,3 @@ public class BlackjackController {
     return new GameStatus(playRequest.getPlayer1Hand().getCards(), playRequest.getPlayer2Hand().getCards());
   }
 }
-/*  @PostMapping("/stand/{playerNumber}")
-  public GameStatus playerStand(
-      @PathVariable int playerNumber,
-      @RequestBody PlayRequest playRequest
-
-  ) {
-    if (playerNumber == 1) {
-      // Player 1 stands, handle AI logic for Player 2 (hit until reaching a certain value)
-      while (service.getHandValue(hand) < 17) {
-        service.playerHit(hand);
-      }
-    } else if (playerNumber == 2) {
-      // Handle player 2 stand action (similar to player 1)
-    } else {
-      throw new IllegalArgumentException("Invalid player number");
-    }
-    Hand opponentHand = new Hand(); // Placeholder for opponent's hand (replace with actual hand)
-    return new GameStatus(hand.getCards(), opponentHand.getCards(), service.getWinner(hand, opponentHand));
-  }*/
